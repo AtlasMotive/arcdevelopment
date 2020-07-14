@@ -16,16 +16,16 @@ import {
   ListItemText,
 } from '@material-ui/core';
 
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from '@material-ui/icons/Menu';
 
 import { makeStyles } from '@material-ui/styles';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 
 import logo from '../../assets/logo.svg';
 
 function ElevationScroll(props) {
-  const { children, } = props;
+  const { children } = props;
 
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -40,7 +40,7 @@ function ElevationScroll(props) {
 // We use useStyles and makeStyles here to solve the issue that is
 // the lack of a margin underneath the toolbar.  By using a predefined
 // 'mixin' that is accessed from https://material-ui.com/customization/default-theme/
-// By using the default theme, we can make general changes to overall theme by using 
+// By using the default theme, we can make general changes to overall theme by using
 // a Theme.jsx file and locate it inside of a 'ui' folder.  But, there are some times
 // when inline changes will need to be made, you cand do this by accessing useStyles
 
@@ -48,55 +48,58 @@ function ElevationScroll(props) {
 // marginBottom of 3em to offset the new change due to the increase in image size
 // we were looking to obtain
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: "3em",
-    [theme.breakpoints.down("md")]: {
-      marginBottom: "2em"
+    marginBottom: '3em',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '2em',
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: "1.25em"
+      marginBottom: '1.25em',
     },
   },
   logo: {
-    height: "8em",
+    height: '8em',
     // we place a media query based styling this way
-    [theme.breakpoints.down("md")]: {
-      height: "7em"
+    [theme.breakpoints.down('md')]: {
+      height: '7em',
     },
     [theme.breakpoints.down('xs')]: {
-      height: "5.5em"
+      height: '5.5em',
     },
   },
   logoContainer: {
     padding: 0,
-    "&:hover": {
-      backgroundColor: "transparent"
-    }
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
   },
   tabContainer: {
-    marginLeft: 'auto'
+    marginLeft: 'auto',
   },
   // We extrated 4 different Tab options to place in Theme.jsx, we did
   // This in order to scale with reuse in other places inside of the website
-  // we may use. 
+  // we may use.
   tab: {
     ...theme.typography.tab,
     minWidth: 10,
-    marginLeft: "25px"
+    marginLeft: '25px',
   },
   button: {
     ...theme.typography.estimate,
-    borderRadius: "50px",
-    marginLeft: "50px",
-    marginRight: "25px",
-    height: "45px",
+    borderRadius: '50px',
+    marginLeft: '50px',
+    marginRight: '25px',
+    height: '45px',
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
   },
   menu: {
     backgroundColor: theme.palette.common.blue,
-    color: "white",
-    borderRadius: "0px"
+    color: 'white',
+    borderRadius: '0px',
   },
   // menuItem is abstracting what we've already definded in our theme.jsx in typography.tab
   // we then copy the opacity that exists in our standard tab opacity when used and override
@@ -104,56 +107,53 @@ const useStyles = makeStyles(theme => ({
   menuItem: {
     ...theme.typography.tab,
     opacity: 0.7,
-    "&:hover": {
-      opacity: 1
-    }
+    '&:hover': {
+      opacity: 1,
+    },
   },
   drawerIcon: {
-    height: "50px",
-    width: "50px",
+    height: '50px',
+    width: '50px',
   },
   drawerIconContainer: {
-    marginLeft: "auto",
-    "&:hover": {
-      backgroundColor: "transparent"
-    }
+    marginLeft: 'auto',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
   },
   drawer: {
-    backgroundColor: theme.palette.common.blue
+    backgroundColor: theme.palette.common.blue,
   },
   drawerItem: {
     ...theme.typography.tab,
-    color: "white",
-    opacity: 0.7
+    color: 'white',
+    opacity: 0.7,
   },
   drawerItemEstimate: {
-    backgroundColor: theme.palette.common.orange
+    backgroundColor: theme.palette.common.orange,
   },
   drawerItemSelected: {
-    "& .MuiListItemText-root": {
-      opacity: 1
-    }
+    '& .MuiListItemText-root': {
+      opacity: 1,
+    },
   },
   appbar: {
-    zIndex: theme.zIndex.modal + 1
-  }
-}))
-
+    zIndex: theme.zIndex.modal + 1,
+  },
+}));
 
 export default function Header(props) {
   const classes = useStyles();
   const theme = useTheme();
-  //Using this to check if device is rendered on an iOS
+  // Using this to check if device is rendered on an iOS
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   // we create matches to be true if the query is less than the md breakpoint
   // we moved all our tabs code into a const in order to render it on condition
-  const matches = useMediaQuery(theme.breakpoints.down("md"))
-
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
 
   const [openDrawer, setOpenDrawer] = useState(false);
   // we use const [value, setValue] = useState(0); to create a hook to allow for selection
   // of tab we are using.  We pipe this to "Tabs" in order to control the highlighting / bolding
-  const [value, setValue] = useState(0);
 
   // this is a hook that will store which element we clicked on and which to be rendered
   // Will contain services tab and what to render.
@@ -163,56 +163,58 @@ export default function Header(props) {
   const [openMenu, setOpenMenu] = useState(false);
 
   // creating an index to select for menus
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // handleChange requires an event and value and uses setValue created from hook to set state
   const handleChange = (e, newValue) => {
-    setValue(newValue)
-  }
+    props.setValue(newValue);
+  };
 
   // formula to handle changing pages based on what is clicked
   const handleClick = (e) => {
-    setAnchorEl(e.currentTarget)
-    setOpenMenu(true)
-  }
+    setAnchorEl(e.currentTarget);
+    setOpenMenu(true);
+  };
 
   const handleMenuItemClick = (e, index) => {
-    setAnchorEl(null)
-    setOpenMenu(false)
-    setSelectedIndex(index)
-  }
+    setAnchorEl(null);
+    setOpenMenu(false);
+    props.setSelectedIndex(index);
+  };
 
   const handleClose = (e) => {
-    setAnchorEl(null)
-    setOpenMenu(false)
-  }
+    setAnchorEl(null);
+    setOpenMenu(false);
+  };
 
   const menuOptions = [
-    { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
-    { name: "Custom Software Development", link: "/customsoftware", activeIndex: 1, selectedIndex: 1 },
-    { name: "Mobile App Development", link: "/mobileapps", activeIndex: 1, selectedIndex: 2 },
-    { name: "Website Development", link: "/websites", activeIndex: 1, selectedIndex: 3 },
-  ]
-
+    {
+      name: 'Services', link: '/services', activeIndex: 1, selectedIndex: 0,
+    },
+    {
+      name: 'iOS/Android App Development', link: '/customsoftware', activeIndex: 1, selectedIndex: 1,
+    },
+    {
+      name: 'Mobile App Development', link: '/mobileapps', activeIndex: 1, selectedIndex: 2,
+    },
+    {
+      name: 'Website Development', link: '/websites', activeIndex: 1, selectedIndex: 3,
+    },
+  ];
 
   const routes = [
-    { name: "Home", link: "/", activeIndex: 0 },
+    { name: 'Home', link: '/', activeIndex: 0 },
     {
-      name: "Services",
-      link: "/services",
+      name: 'Services',
+      link: '/services',
       activeIndex: 1,
-      ariaOwns: anchorEl ? "simple-menu" : undefined,
+      ariaOwns: anchorEl ? 'simple-menu' : undefined,
       ariaPopup: anchorEl ? true : undefined,
-      mouseOver: event => handleClick(event)
+      mouseOver: (event) => handleClick(event),
     },
-    { name: "The Revolution", link: "/revolution", activeIndex: 2 },
-    { name: "About Us", link: "/about", activeIndex: 3 },
-    { name: "Contact Us", link: "/contact", activeIndex: 4 },
-  ]
-
-
-
-
+    { name: 'The Revolution', link: '/revolution', activeIndex: 2 },
+    { name: 'About Us', link: '/about', activeIndex: 3 },
+    { name: 'Contact Us', link: '/contact', activeIndex: 4 },
+  ];
 
   // useEffect is a lifecycle hook that is for material ui.  It allows actions / functions to be
   // done after an update.  In order to make sure that the page reflects the active page when refreshing,
@@ -228,26 +230,29 @@ export default function Header(props) {
     // Then, it checks if route.selectedIndex exists, AND if the route.selectedIndex does NOT equal the STATE HOOK
     // selectedIndex, it then overrides the state with setSelectedIndex(route.selectedIndex)
 
-    [...menuOptions, ...routes].forEach(route => {
+    [...menuOptions, ...routes].forEach((route) => {
       switch (window.location.pathname) {
         case `${route.link}`:
-          if (value !== route.activeIndex) {
-            setValue(route.activeIndex)
-            if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
-              setSelectedIndex(route.selectedIndex)
+          if (props.value !== route.activeIndex) {
+            props.setValue(route.activeIndex);
+            if (route.selectedIndex && route.selectedIndex !== props.selectedIndex) {
+              props.setSelectedIndex(route.selectedIndex);
             }
           }
+          break;
+        case '/estimate':
+          props.setValue(5);
           break;
         default:
           break;
       }
-    })
-  }, [value, menuOptions, selectedIndex, routes]);
+    });
+  }, [props.value, menuOptions, props.selectedIndex, routes, props]);
 
   const tabs = (
-    <React.Fragment>
+    <>
       <Tabs
-        value={value}
+        value={props.value}
         onChange={handleChange}
         className={classes.tabContainer}
         indicatorColor="primary"
@@ -265,7 +270,14 @@ export default function Header(props) {
           />
         ))}
       </Tabs>
-      <Button variant="contained" color="secondary" className={classes.button}>
+      <Button
+        variant="contained"
+        color="secondary"
+        component={Link}
+        to="/estimate"
+        className={classes.button}
+        onClick={() => props.setValue(5)}
+      >
         Free Estimate
       </Button>
       <Menu
@@ -306,20 +318,19 @@ export default function Header(props) {
             component={Link}
             to={option.link}
             classes={{ root: classes.menuItem }}
-            onClick={(event) => { handleMenuItemClick(event, i); setValue(1); handleClose() }}
-            selected={i === selectedIndex && value === 1}
+            onClick={(event) => { handleMenuItemClick(event, i); props.setValue(1); handleClose(); }}
+            selected={i === props.selectedIndex && props.value === 1}
           >
             {option.name}
           </MenuItem>
         ))}
 
-
       </Menu>
-    </React.Fragment>
-  )
+    </>
+  );
 
   const drawer = (
-    <React.Fragment>
+    <>
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
@@ -330,7 +341,7 @@ export default function Header(props) {
       >
         <div className={classes.toolbarMargin} />
         <List disablePadding>
-          {routes.map(route => (
+          {routes.map((route) => (
             <ListItem
               key={`${route}${route.activeIndex}`}
               className={
@@ -338,12 +349,12 @@ export default function Header(props) {
                   ? [classes.drawerItem, classes.drawerItemSelected]
                   : classes.drawerItem
               }
-              onClick={() => { setOpenDrawer(false); setValue(route.activeIndex) }}
+              onClick={() => { setOpenDrawer(false); props.setValue(route.activeIndex); }}
               divider
               button
               component={Link}
               to={route.link}
-              selected={value === route.activeIndex}
+              selected={props.value === route.activeIndex}
               classes={{ selected: classes.drawerItemSelected }}
             >
               <ListItemText
@@ -355,16 +366,14 @@ export default function Header(props) {
             </ListItem>
           ))}
 
-
           <ListItem
             classes={{ root: classes.drawerItemEstimate, selected: classes.drawerItemSelected }}
-            onClick={() => { setOpenDrawer(false); setValue(5) }}
+            onClick={() => { setOpenDrawer(false); props.setValue(5); }}
             divider
             button
             component={Link}
             to="/estimate"
-            selected={value === 5
-            }
+            selected={props.value === 5}
           >
             <ListItemText
               className={classes.drawerItem}
@@ -382,16 +391,21 @@ export default function Header(props) {
       >
         <MenuIcon className={classes.drawerIcon} />
       </IconButton>
-    </React.Fragment >
-  )
+    </>
+  );
 
   return (
-    <React.Fragment>
+    <>
       <ElevationScroll>
-        <AppBar position="fixed" className={classes.appbar} >
+        <AppBar position="fixed" className={classes.appbar}>
           <Toolbar disableGutters>
-            <Button component={Link} to="/" disableRipple onClick={() => setValue(0)}
-              className={classes.logoContainer}>
+            <Button
+              component={Link}
+              to="/"
+              disableRipple
+              onClick={() => props.setValue(0)}
+              className={classes.logoContainer}
+            >
               <img alt="company logo" className={classes.logo} src={logo} />
             </Button>
             {matches ? drawer : tabs}
@@ -399,6 +413,6 @@ export default function Header(props) {
         </AppBar>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-    </React.Fragment>
+    </>
   );
 }
